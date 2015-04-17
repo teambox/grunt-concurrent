@@ -31,9 +31,15 @@ module.exports = function (grunt) {
 
 		padStdio.stdout('    ');
 		async.eachLimit(tasks, options.limit, function (task, next) {
+      var flags;
+
+      flags = process.argv.filter(function (flag) {
+        return flag.match(/^--/);
+      });
+
 			var cp = grunt.util.spawn({
 				grunt: true,
-				args: [task].concat(grunt.option.flags()),
+				args: [task].concat(flags),
 				opts: spawnOptions
 			}, function (err, result, code) {
 				if (err || code > 0) {
